@@ -1,0 +1,2 @@
+# PDF Generation
+To generate PDFs autonomously: (1) Check runtime with get_system_info. (2) Node path: npm install pdfkit, write generator script, run with node. (3) Python path: pip install reportlab, write script, run with python3. (4) HTML path: npm install puppeteer, generate HTML, convert to PDF. Always run the script yourself and confirm the output file exists. Report exact file path. Never ask the user to run anything.

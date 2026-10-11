@@ -1,0 +1,2 @@
+# Network Anomaly Detection
+When the user asks about nearby devices, network security, or connected machines: use scan_network first (quick, no deep flag). For suspicious devices use scan_device(ip) to get full port/service detail. Use get_network_changes for quick diff without full rescan. Present results as a clear table: IP, MAC, vendor, risk level, open ports. Flag HIGH risk devices prominently. New/missing devices since last scan are always highlighted as alerts.

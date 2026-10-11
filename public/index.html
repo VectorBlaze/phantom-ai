@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>PHANTØM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div class="splash" id="splash">
+  <div class="sp-ring"></div>
+  <div class="sp-logo">Ø</div>
+  <div class="sp-name">PHANTØM</div>
+  <div class="sp-bar"><div class="sp-fill"></div></div>
+</div>
+
+<div class="app" id="app">
+
+  <!-- ══════════════════════════════════
+       SIDEBAR  (expanded, toggleable)
+  ═══════════════════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+
+    <!-- Brand -->
+    <div class="sb-brand">
+      <div class="sb-logo">Ø</div>
+      <span class="sb-name">PHANTØM</span>
+    </div>
+
+    <!-- Nav tabs (horizontal strip) -->
+    <div class="sb-nav" id="sbNav">
+      <button class="sn active" id="rChat"     data-panel="chat">💬 Chat</button>
+      <button class="sn"        id="rSessions" data-panel="sessions">🗂 Sessions</button>
+      <button class="sn"        id="rFiles"    data-panel="files">📁 Files</button>
+      <button class="sn"        id="rSkills"   data-panel="skills">⚡ Skills</button>
+      <button class="sn"        id="rSettings" data-panel="settings">⚙ Settings</button>
+      <button class="sn"        id="rSysinfo"  data-panel="sysinfo">🖥 System</button>
+    </div>
+
+    <!-- Panel content (expands below nav) -->
+    <div class="sb-panel" id="sbPanel">
+
+      <!-- Chat (new session btn only) -->
+      <div class="sp-body" id="pChat">
+        <button class="panel-new-btn" id="btnNewSession">＋ New session</button>
+        <div class="session-list" id="sessionList"></div>
+      </div>
+
+      <!-- Sessions (alias — same list) -->
+      <div class="sp-body" id="pSessions" hidden>
+        <button class="panel-new-btn" id="btnNewSession2">＋ New session</button>
+        <div class="session-list" id="sessionList2"></div>
+      </div>
+
+      <!-- Files -->
+      <div class="sp-body" id="pFiles" hidden>
+        <div class="drop-zone" id="dropZone">
+          <div class="dz-icon">📂</div>
+          <div class="dz-text">Drop files or click to attach</div>
+        </div>
+        <div class="file-list" id="panelFileList"></div>
+      </div>
+
+      <!-- Skills -->
+      <div class="sp-body" id="pSkills" hidden>
+        <div class="skill-list" id="skillList"><div class="panel-loading">Loading…</div></div>
+      </div>
+
+      <!-- Settings -->
+      <div class="sp-body" id="pSettings" hidden>
+        <div class="setting-group">
+          <div class="sg-label">Capabilities</div>
+          <label class="sw-row"><span class="sw-label">Web Search</span><input type="checkbox" id="swWeb" checked/><span class="sw-track"><span class="sw-thumb"></span></span></label>
+          <label class="sw-row"><span class="sw-label">Terminal</span><input type="checkbox" id="swTerminal" checked/><span class="sw-track"><span class="sw-thumb"></span></span></label>
+          <label class="sw-row"><span class="sw-label">File System</span><input type="checkbox" id="swFiles" checked/><span class="sw-track"><span class="sw-thumb"></span></span></label>
+          <label class="sw-row"><span class="sw-label">Skills</span><input type="checkbox" id="swSkills" checked/><span class="sw-track"><span class="sw-thumb"></span></span></label>
+        </div>
+        <div class="setting-group">
+          <div class="sg-label">Display</div>
+          <label class="sw-row"><span class="sw-label">Thought Process</span><input type="checkbox" id="swThoughts" checked/><span class="sw-track"><span class="sw-thumb"></span></span></label>
+          <label class="sw-row"><span class="sw-label">Stream Responses</span><input type="checkbox" id="swStream" checked/><span class="sw-track"><span class="sw-thumb"></span></span></label>
+          <label class="sw-row"><span class="sw-label">Auto-expand Code</span><input type="checkbox" id="swAutoCode"/><span class="sw-track"><span class="sw-thumb"></span></span></label>
+        </div>
+      </div>
+
+
+      <!-- Sysinfo -->
+      <div class="sp-body" id="pSysinfo" hidden>
+        <div id="sysInfoContent"><div class="panel-loading">Loading system info…</div></div>
+      </div>
+    </div><!-- /sb-panel -->
+
+    <!-- Bottom actions -->
+    <div class="sb-bottom">
+      <button class="sb-action" id="rClear" title="Clear chat">🗑 Clear chat</button>
+    </div>
+
+  </aside>
+
+  <!-- Mini icon rail shown when sidebar is collapsed -->
+  <nav class="rail-mini" id="railMini">
+    <div class="rm-logo">Ø</div>
+    <button class="rm-btn" data-panel="chat"     data-tip="Chat">💬</button>
+    <button class="rm-btn" data-panel="sessions" data-tip="Sessions">🗂</button>
+    <button class="rm-btn" data-panel="files"    data-tip="Files">📁</button>
+    <button class="rm-btn" data-panel="skills"   data-tip="Skills">⚡</button>
+    <button class="rm-btn" data-panel="settings" data-tip="Settings">⚙</button>
+    <button class="rm-btn" data-panel="sysinfo"  data-tip="System">🖥</button>
+    <div class="rm-bot">
+      <button class="rm-btn" id="rmClear" data-tip="Clear">🗑</button>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════
+       MAIN
+  ═══════════════════════════════════ -->
+  <main class="workspace" id="workspace">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="tb-left">
+        <button class="tb-btn" id="btnToggleRail" title="Toggle sidebar">☰</button>
+        <span class="tb-title" id="tbTitle">Agent</span>
+      </div>
+
+      <!-- Model picker in topbar -->
+      <div class="tb-model" id="tbModelWrap">
+        <button class="model-pill" id="modelPill">
+          <span class="model-dot"></span>
+          <span id="modelLabel">Phantom-Fin</span>
+          <span class="model-caret">▾</span>
+        </button>
+        <div class="model-drop" id="modelDrop" hidden>
+          <button class="md-opt active" data-val="anthropic/claude-3.5-sonnet">
+            <span class="md-name">Phantom-Fin</span>
+            <span class="md-sub">Powerful · Smart</span>
+          </button>
+          <button class="md-opt" data-val="anthropic/claude-3-haiku">
+            <span class="md-name">Phantom-Lite</span>
+            <span class="md-sub">Fast · Efficient</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="tb-right">
+        <button class="tb-btn" id="btnScreenshot" title="Screenshot">📷</button>
+        <button class="tb-btn" id="btnTermView"   title="Terminal trace">⬛</button>
+        <div class="tb-sep"></div>
+        <button class="tb-btn" id="btnEditor"   title="Toggle editor">◫</button>
+        <button class="tb-btn" id="btnNewChat"  title="New chat">＋</button>
+      </div>
+    </header>
+
+    <!-- CHAT + EDITOR -->
+    <div class="ws-body" id="wsBody">
+
+      <div class="chat-col" id="chatCol">
+
+        <!-- scroll wrapper — THIS is what scrolls -->
+        <div class="chat-scroll" id="chatScroll">
+
+          <div class="welcome" id="welcome">
+            <div class="wl-symbol">Ø</div>
+            <h1>What are we building?</h1>
+            <p>PHANTØM understands your project, writes and runs code, fixes errors, and verifies everything works.</p>
+            <div class="quick-grid">
+              <button class="qc" data-prompt="Inspect this project: list all files, read package.json, explain the architecture and dependencies."><span>🔍</span><strong>Inspect project</strong>Scan structure & dependencies</button>
+              <button class="qc" data-prompt="Find all bugs and errors in this project, fix them, and verify the fixes work."><span>🐛</span><strong>Debug & fix</strong>Trace errors to root cause</button>
+              <button class="qc" data-prompt="Research the best approach, then implement a complete working solution."><span>📚</span><strong>Research & build</strong>Search, plan, implement</button>
+              <button class="qc" data-prompt="Run all tests, show results, and fix any failures."><span>✅</span><strong>Run tests</strong>Execute & verify results</button>
+              <button class="qc" data-prompt="Analyze this project for security vulnerabilities: hardcoded secrets, injection flaws, insecure dependencies."><span>🔐</span><strong>Security audit</strong>Scan for vulnerabilities</button>
+              <button class="qc" data-prompt="Install all dependencies, resolve any conflicts, and start the development server."><span>🚀</span><strong>Setup & run</strong>Install deps, start server</button>
+            </div>
+          </div>
+
+          <div class="messages" id="messages"></div>
+
+        </div><!-- /chat-scroll -->
+
+        <!-- Live bar sits OUTSIDE scroll, pinned below messages -->
+        <div class="live-bar" id="liveBar" hidden>
+          <div class="lb-dot"></div>
+          <div class="lb-main" id="lbMain">Working…</div>
+          <div class="lb-sub"  id="lbSub"></div>
+          <button class="lb-cancel" id="btnCancel" title="Cancel">✕</button>
+        </div>
+
+        <!-- COMPOSER -->
+        <footer class="composer-area">
+          <div class="composer-wrap">
+            <div class="attach-chips" id="attachChips" hidden></div>
+            <div class="composer" id="composer">
+              <textarea id="msgInput" rows="1" placeholder="Give PHANTØM a task…" autocomplete="off" spellcheck="true"></textarea>
+              <div class="c-bar">
+                <div class="c-left">
+                  <button class="c-btn ico" id="cAttach" title="Attach files">📎</button>
+                  <div class="c-sep"></div>
+                  <button class="c-btn tog" id="cWeb"      data-key="web">🌐 Web</button>
+                  <button class="c-btn tog" id="cTerminal" data-key="terminal">⚡ Terminal</button>
+                  <button class="c-btn tog" id="cFiles"    data-key="files">📁 Files</button>
+                </div>
+                <button class="send-btn" id="sendBtn" disabled>↑</button>
+              </div>
+            </div>
+          </div>
+        </footer>
+
+      </div><!-- /chat-col -->
+
+      <!-- EDITOR PANE -->
+      <div class="editor-pane" id="editorPane">
+        <div class="ep-header">
+          <div class="ep-tabs" id="epTabs"></div>
+          <div class="ep-actions">
+            <button class="ep-btn" id="epRun">▶ Run</button>
+            <button class="ep-btn" id="epCopy">Copy</button>
+            <button class="ep-btn ep-close" id="epClose">✕</button>
+          </div>
+        </div>
+        <div class="ep-body" id="epBody">
+          <div class="term-view" id="termView" hidden>
+            <div class="term-header">
+              <span class="term-title">Terminal Trace</span>
+              <button class="term-clear" id="termClear">Clear</button>
+            </div>
+            <div class="term-output" id="termOutput"></div>
+          </div>
+          <div class="code-editor" id="codeEditor">
+            <div class="ce-empty">
+              <div class="ce-empty-icon">◫</div>
+              <div class="ce-empty-text">No file open</div>
+              <div class="ce-empty-sub">Files written by PHANTØM appear here</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /ws-body -->
+  </main>
+</div>
+
+<!-- SCREENSHOT OVERLAY -->
+<div class="screenshot-overlay" id="screenshotOverlay" hidden>
+  <div class="ss-panel">
+    <div class="ss-head"><span>Screenshot</span><button id="ssClose">✕</button></div>
+    <img id="ssImg" src="" alt="Screenshot"/>
+    <div class="ss-foot">
+      <button id="ssCopy">Copy image</button>
+      <button id="ssDownload">Download</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="fileInput" multiple hidden
+  accept="image/*,.txt,.md,.json,.js,.mjs,.ts,.tsx,.jsx,.css,.html,.xml,.csv,.py,.java,.cpp,.c,.h,.rs,.go,.php,.sql,.yaml,.yml,.toml,.env,.log,.sh,.bat,.lock,.config"/>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.3.0/dist/purify.min.js"></script>
+<script src="ini.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

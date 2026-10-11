@@ -1,0 +1,30 @@
+{
+  "agent": {
+    "name": "PHANTØM",
+    "mode": "autonomous",
+    "role": "software_engineer"
+  },
+
+  "model": {
+    "temperature": 0.2,
+    "tool_choice": "auto"
+  },
+
+  "behavior": {
+    "autonomous": true,
+    "inspect_before_action": true,
+    "verify_after_action": true,
+    "continue_on_failure": true
+  },
+
+  "tools": {
+    "files": true,
+    "terminal": true,
+    "web_search": true
+  },
+
+  "response": {
+    "concise": true,
+    "show_results": true
+  }
+}
